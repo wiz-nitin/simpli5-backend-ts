@@ -2,7 +2,6 @@ node_modules
 .env*
 google.keyfile.json
 .DS_Store
-dist
 data
 bin/scripts.ts
 dbExport
