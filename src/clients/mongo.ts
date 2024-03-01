@@ -16,7 +16,7 @@ export class _MongoClient extends ConnectionClient {
   }
 
   _connect = async () => {
-    const mongoUri =`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_NAME}.kmdsbv3.mongodb.net/`;
+    const mongoUri =`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_NAME}.txowmvz.mongodb.net/`;
 
     mongoose.connection.on('error', (err) => {
       console.log(err);

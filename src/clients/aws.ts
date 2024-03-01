@@ -62,7 +62,7 @@ export class AwsClient extends SdkClient {
         };
         try {
             const result = this._client.ses.sendEmail(params).promise();
-            console.log('Email sent successfully:', result);
+            // console.log('Email sent successfully:', result);
             return
         } catch (err) {
             console.error('Error sending email:', err);
