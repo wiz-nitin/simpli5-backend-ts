@@ -40,10 +40,12 @@ export class AwsClient extends SdkClient {
         emailTemplate,
         userData,
         subject,
+        replyToAddresses,
         senderEmail
     }: any) => {
         const params = {
             Destination: {
+                CcAddresses: replyToAddresses,
                 ToAddresses: [userData.email]
             },
             Message: {
@@ -58,7 +60,8 @@ export class AwsClient extends SdkClient {
                     Data: subject
                 }
             },
-            Source: senderEmail
+            Source: senderEmail,
+            ReplyToAddresses : replyToAddresses
         };
         try {
             const result = this._client.ses.sendEmail(params).promise();

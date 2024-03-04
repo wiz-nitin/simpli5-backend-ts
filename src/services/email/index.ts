@@ -68,7 +68,7 @@ type EmailClientArgs<TemplateData> = {
 
 export const sendSupportTicketEmailToSupport = async ({
   user,
-  recipientEmail = 'nitinsayshe@gmail.com', //EmailAddresses.Support,
+  recipientEmail = EmailAddresses.ReplyTo,
   senderEmail = EmailAddresses.ReplyTo,
   replyToAddresses = [EmailAddresses.ReplyTo],
   message,
