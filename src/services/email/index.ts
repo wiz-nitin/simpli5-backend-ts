@@ -1,9 +1,8 @@
 import { AwsClient } from "../../clients/aws";
 import { EmailAddresses, ErrorTypes } from "../../lib/constants";
 import CustomError from "../../lib/customError";
-import { EmailTemplateConfigs, EmailTemplateTypes, IBuildTemplateParams, ISupportEmailVerificationTemplateParams } from "./types";
+import { ISupportEmailVerificationTemplateParams } from "./types";
 import fs from 'fs';
-import { colors } from '../../lib/colors';
 import Handlebars, { template } from 'handlebars';
 import path from 'path';
 import dayjs from 'dayjs';
