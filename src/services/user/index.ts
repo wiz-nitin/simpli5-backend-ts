@@ -22,11 +22,11 @@ export const register = async ({ name, email, phoneNumber }: IRegisterUserData) 
         if (!email) throw new CustomError('A email is required.', ErrorTypes.INVALID_ARG);
         if (!phoneNumber) throw new CustomError('A phoneNumber is required.', ErrorTypes.INVALID_ARG);
 
-        // get the user By phone Number
-        const user = await UserModel.findOne({ $or: [{ "phoneNumbers.phoneNumber": phoneNumber }, { "email": email }] })
-        if (user) {
-            throw new CustomError(' details is already associated with a user. Please sign in or use a different number & email.', ErrorTypes.CONFLICT);
-        }
+        // // get the user By phone Number
+        // const existingUser = await UserModel.findOne({ $or: [{ "phoneNumbers.phoneNumber": phoneNumber }, { "email": email }] })
+        // if (existingUser) {
+        //     throw new CustomError(' details is already associated with a user. Please sign in or use a different number & email.', ErrorTypes.CONFLICT);
+        // }
 
         // format the email and name in lower case
         email = email?.toLowerCase()?.trim();
@@ -40,22 +40,27 @@ export const register = async ({ name, email, phoneNumber }: IRegisterUserData) 
             phoneNumbers,
             role: UserRoles.User,
         }
-        // create the new User
-        const newUser = await UserModel.create(parmas);
-        if (!newUser) throw new CustomError('Error creating user...', ErrorTypes.SERVER);
+        // // create the new User
+        // const newUser = await UserModel.create(parmas);
+        // if (!newUser) throw new CustomError('Error creating user...', ErrorTypes.SERVER);
+        const userData = await UserModel.findOneAndUpdate(
+            { "phoneNumbers.phoneNumber": phoneNumber },
+            parmas,
+            { upsert: true, new: true }
+        )
         try {
             let authKey = '';
-            authKey = Session.createJwtToken({ userId: newUser._id })
+            authKey = Session.createJwtToken({ userId: userData._id })
 
             const responseInfo: any = {
-                user: newUser,
+                user: userData,
                 authKey,
             };
-           
+
             return responseInfo;
         } catch (afterCreationError) {
             // undo user creation
-            await UserModel.deleteOne({ _id: newUser?._id });
+            await UserModel.deleteOne({ _id: userData?._id });
             throw new CustomError('Error creating user', ErrorTypes.SERVER);
         }
 

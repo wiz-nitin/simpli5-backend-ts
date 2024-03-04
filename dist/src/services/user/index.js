@@ -58,11 +58,11 @@ const register = ({ name, email, phoneNumber }) => __awaiter(void 0, void 0, voi
             throw new customError_1.default('A email is required.', constants_1.ErrorTypes.INVALID_ARG);
         if (!phoneNumber)
             throw new customError_1.default('A phoneNumber is required.', constants_1.ErrorTypes.INVALID_ARG);
-        // get the user By phone Number
-        const user = yield user_1.UserModel.findOne({ $or: [{ "phoneNumbers.phoneNumber": phoneNumber }, { "email": email }] });
-        if (user) {
-            throw new customError_1.default(' details is already associated with a user. Please sign in or use a different number & email.', constants_1.ErrorTypes.CONFLICT);
-        }
+        // // get the user By phone Number
+        // const existingUser = await UserModel.findOne({ $or: [{ "phoneNumbers.phoneNumber": phoneNumber }, { "email": email }] })
+        // if (existingUser) {
+        //     throw new CustomError(' details is already associated with a user. Please sign in or use a different number & email.', ErrorTypes.CONFLICT);
+        // }
         // format the email and name in lower case
         email = (_a = email === null || email === void 0 ? void 0 : email.toLowerCase()) === null || _a === void 0 ? void 0 : _a.trim();
         name = (_b = name === null || name === void 0 ? void 0 : name.toLowerCase()) === null || _b === void 0 ? void 0 : _b.trim();
@@ -74,22 +74,22 @@ const register = ({ name, email, phoneNumber }) => __awaiter(void 0, void 0, voi
             phoneNumbers,
             role: user_1.UserRoles.User,
         };
-        // create the new User
-        const newUser = yield user_1.UserModel.create(parmas);
-        if (!newUser)
-            throw new customError_1.default('Error creating user...', constants_1.ErrorTypes.SERVER);
+        // // create the new User
+        // const newUser = await UserModel.create(parmas);
+        // if (!newUser) throw new CustomError('Error creating user...', ErrorTypes.SERVER);
+        const userData = yield user_1.UserModel.findOneAndUpdate({ "phoneNumbers.phoneNumber": phoneNumber }, parmas, { upsert: true, new: true });
         try {
             let authKey = '';
-            authKey = Session.createJwtToken({ userId: newUser._id });
+            authKey = Session.createJwtToken({ userId: userData._id });
             const responseInfo = {
-                user: newUser,
+                user: userData,
                 authKey,
             };
             return responseInfo;
         }
         catch (afterCreationError) {
             // undo user creation
-            yield user_1.UserModel.deleteOne({ _id: newUser === null || newUser === void 0 ? void 0 : newUser._id });
+            yield user_1.UserModel.deleteOne({ _id: userData === null || userData === void 0 ? void 0 : userData._id });
             throw new customError_1.default('Error creating user', constants_1.ErrorTypes.SERVER);
         }
     }
