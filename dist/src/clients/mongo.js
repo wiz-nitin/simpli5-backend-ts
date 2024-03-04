@@ -21,7 +21,7 @@ class _MongoClient extends connectionClient_1.ConnectionClient {
         super('Mongo');
         this._db = null;
         this._connect = () => __awaiter(this, void 0, void 0, function* () {
-            const mongoUri = `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_NAME}.txowmvz.mongodb.net/`;
+            const mongoUri = `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_NAME}.n7qakgt.mongodb.net/${DB_NAME}`;
             mongoose_1.default.connection.on('error', (err) => {
                 console.log(err);
             });

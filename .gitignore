@@ -1,5 +1,5 @@
 node_modules
-.env*
+# .env*
 google.keyfile.json
 .DS_Store
 data
