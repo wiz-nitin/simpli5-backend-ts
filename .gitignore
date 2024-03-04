@@ -1,4 +1,5 @@
 node_modules
+dist
 .env*
 google.keyfile.json
 .DS_Store
