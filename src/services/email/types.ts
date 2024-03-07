@@ -1,4 +1,5 @@
 import { IUserDocument } from "../../models/user";
+import { ISubmitSupportTicketRequest } from "../supportTicket";
 
 export interface ISupportEmailVerificationTemplateParams {
   domain?: string;
@@ -7,6 +8,7 @@ export interface ISupportEmailVerificationTemplateParams {
   senderEmail?: string;
   user?: IUserDocument;
   subject?: string;
+  supportTicket: any;
   supportTicketId: string;
   recipientEmail?: string;
 }

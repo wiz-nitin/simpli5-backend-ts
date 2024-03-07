@@ -19,14 +19,15 @@ const fs_1 = __importDefault(require("fs"));
 const handlebars_1 = __importDefault(require("handlebars"));
 const path_1 = __importDefault(require("path"));
 const awsClient = new aws_1.AwsClient();
-const sendSupportTicketEmailToSupport = ({ user, recipientEmail = constants_1.EmailAddresses.ReplyTo, senderEmail = constants_1.EmailAddresses.ReplyTo, replyToAddresses = [constants_1.EmailAddresses.ReplyTo], message, supportTicketId, }) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, phoneNumbers } = user;
-    const userPhoneNumber = phoneNumbers.find((e) => !!e.primary).phoneNumber;
+const sendSupportTicketEmailToSupport = ({ user, recipientEmail = constants_1.EmailAddresses.ReplyTo, senderEmail = constants_1.EmailAddresses.ReplyTo, replyToAddresses = [constants_1.EmailAddresses.ReplyTo], supportTicket, supportTicketId, }) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = user;
+    const { name, phoneNumber, category, message } = supportTicket;
+    // const userPhoneNumber = phoneNumbers.find((e) => !!e.primary).phoneNumber;
     const subject = `New Support Ticket: ${supportTicketId}`;
     const templatePath = path_1.default.join(__dirname, '..', '..', 'templates', 'supportTemplate.hbs');
     const source = fs_1.default.readFileSync(templatePath, { encoding: 'utf-8' });
     const template = handlebars_1.default.compile(source);
-    const emailTemplate = template({ name, email, phoneNumber: userPhoneNumber, message });
+    const emailTemplate = template({ name, email, phoneNumber, message, category });
     const emailResponse = awsClient.sendMail({
         userData: user,
         emailTemplate,

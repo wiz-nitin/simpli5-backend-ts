@@ -46,6 +46,7 @@ export const submitSupportTicket = async (req: IRequest<{}, {}, ISubmitSupportTi
   sendSupportTicketEmailToSupport({
     user:userInfo,
     message,
+    supportTicket,
     supportTicketId: savedSuccess._id.toString(),
   });
 

@@ -47,6 +47,7 @@ const submitSupportTicket = (req) => __awaiter(void 0, void 0, void 0, function*
     (0, email_1.sendSupportTicketEmailToSupport)({
         user: userInfo,
         message,
+        supportTicket,
         supportTicketId: savedSuccess._id.toString(),
     });
     if (!!savedSuccess) {
